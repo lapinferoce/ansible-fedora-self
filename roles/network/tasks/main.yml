@@ -1,4 +1,4 @@
-- name: enable a timer for dnf-automatic
+- name: enable a sshd
   systemd:
     name: sshd
     state: started

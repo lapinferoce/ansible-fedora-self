@@ -16,13 +16,42 @@
     path: "/home/{{item.name}}/.emacs.d/"
     state: absent
   with_items: "{{ user_list }}"
-    
+
+- name: get filename to copy
+  command: "find /tmp/spacemacs-clone-tmp -type f"
+  register: spacemacs_files
+
+- name: get dirs to copy
+  command: "find /tmp/spacemacs-clone-tmp -type d"
+  register: spacemacs_dirs
+
+#- name: test
+#  debug:
+#     msg: "{{item.0.name}}-{{item.1}}"
+#  loop: "{{ user_list|product(spacemacs_dirs.stdout_lines)|list}}" 
+
+- name: prepare emacs folder
+  file:
+       path:  "/home/{{item.name}}/.emacs.d/"
+       owner: "{{ item.name }}"
+       group: "{{ item.name }}"
+       state: directory
+  with_items: "{{user_list}}"
+
+- name: prepare emacs folder
+  file:
+       path:  "/home/{{item.0.name}}/.emacs.d/{{item.1|replace('/tmp/spacemacs-clone-tmp','')}}"
+       owner: "{{ item.0.name }}"
+       group: "{{ item.0.name }}"
+       state: directory
+  loop: "{{ user_list|product(spacemacs_dirs.stdout_lines)|list}}"
+  
 - name: pimping users
   copy:
-      src: "/tmp/spacemacs-clone-tmp"
-      dest: "/home/{{item.name}}/.emacs.d"
-      owner: "{{ item.name }}"
-      group: "{{ item.name }}"
-      remote_src: yes
-      mode: "0755"
-  with_items: "{{ user_list }}"
+       src:   "{{item.1}}"
+       dest:  "/home/{{item.0.name}}/.emacs.d/{{item.1|replace('/tmp/spacemacs-clone-tmp','')}}"
+       owner: "{{ item.0.name }}"
+       group: "{{ item.0.name }}"
+       remote_src: yes
+       mode: "0755"
+  loop: "{{ user_list|product(spacemacs_files.stdout_lines)|list}}" 

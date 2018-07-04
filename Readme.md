@@ -36,3 +36,14 @@ cd ./this-computer
 ansible-playbook -K ./playbook.yml
 ~~~
 
+## features
+Non exhaustive list:
+  * cinnamon
+  * powerline
+  * spacemacs
+  * kvm + network
+  * packer
+  * terraform
+  * elixir (+ phoenix + nerves soon)
+  * docker-ce
+  * ...
