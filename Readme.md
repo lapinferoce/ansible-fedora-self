@@ -47,3 +47,7 @@ Non exhaustive list:
   * elixir (+ phoenix + nerves soon)
   * docker-ce
   * ...
+
+## bugs n issues
+list of known bugs/improvement:
+  * improve idempotency on file downloads

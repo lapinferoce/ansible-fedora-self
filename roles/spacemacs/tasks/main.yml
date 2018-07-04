@@ -6,10 +6,22 @@
     - git
    state: present
 
+   #- name: check spacemacs already there
+   #  stat:
+   #    path: "/home/{{item}}/.spacemacs"
+   #  with_items: "{{user_list}}"
+   #  register: stats_spacemacs
+
+- name: get dirs to copy
+  command: 'find /home/ -name ".spacemacs" '
+  register: stat_spacemacs
+
 - name: getting spacemacs
   git:
     repo: 'https://github.com/syl20bnr/spacemacs'
-    dest: /tmp/spacemacs-clone-tmp
+    dest: /opt/spacemacs-src
+    update: yes
+  register: git_update 
 
 - name: cleaning spacemacs user env
   file:
@@ -18,12 +30,14 @@
   with_items: "{{ user_list }}"
 
 - name: get filename to copy
-  command: "find /tmp/spacemacs-clone-tmp -type f"
+  command: "find /opt/spacemacs-src -type f"
   register: spacemacs_files
-
+  when: git_update.changed
+  
 - name: get dirs to copy
-  command: "find /tmp/spacemacs-clone-tmp -type d"
+  command: "find /opt/spacemacs-src -type d"
   register: spacemacs_dirs
+  when: git_update.changed
 
 #- name: test
 #  debug:
@@ -37,21 +51,24 @@
        group: "{{ item.name }}"
        state: directory
   with_items: "{{user_list}}"
+  when: git_update.changed
 
 - name: prepare emacs folder
   file:
-       path:  "/home/{{item.0.name}}/.emacs.d/{{item.1|replace('/tmp/spacemacs-clone-tmp','')}}"
+       path:  "/home/{{item.0.name}}/.emacs.d/{{item.1|replace('/opt/spacemacs-src/','')}}"
        owner: "{{ item.0.name }}"
        group: "{{ item.0.name }}"
        state: directory
   loop: "{{ user_list|product(spacemacs_dirs.stdout_lines)|list}}"
+  when: git_update.changed
   
 - name: pimping users
   copy:
        src:   "{{item.1}}"
-       dest:  "/home/{{item.0.name}}/.emacs.d/{{item.1|replace('/tmp/spacemacs-clone-tmp','')}}"
+       dest:  "/home/{{item.0.name}}/.emacs.d/{{item.1|replace('/opt/spacemacs-src/','')}}"
        owner: "{{ item.0.name }}"
        group: "{{ item.0.name }}"
        remote_src: yes
        mode: "0755"
   loop: "{{ user_list|product(spacemacs_files.stdout_lines)|list}}" 
+  when: git_update.changed
