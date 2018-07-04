@@ -1,0 +1,40 @@
+- name: update all packages
+  dnf:
+    name: "*"
+    state: "latest"
+
+    #- name: install adobe
+    #dnf: name="rpm -ivh http://linuxdownload.adobe.com/adobe-release/adobe-release-x86_64-1.0-1.noarch.rpm" state=present
+
+
+
+- name: install epel repo
+  yum_repository:
+   name: epel
+   description: EPEL YUM repo
+   file: external_repos
+   baseurl: "https://download.fedoraproject.org/pub/epel/$releasever/$basearch/"
+   gpgcheck: no
+
+  yum_repository:
+   name: epel
+   description: EPEL YUM repo
+   file: external_repos
+   baseurl: "https://download.fedoraproject.org/pub/epel/$releasever/$basearch/"
+   gpgcheck: no
+
+- name: install chromium repo
+  yum_repository:
+   name: google-chrome
+   description: Chrom repo
+   file: external_repos
+   baseurl: "http://dl.google.com/linux/chrome/rpm/stable/x86_64"
+   gpgcheck: yes
+   gpgkey: "https://dl-ssl.google.com/linux/linux_signing_key.pub"
+
+- name: install fusion
+  dnf: name="https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-28.noarch.rpm" state=present
+
+- name: install default but usefull tools
+  dnf: name={{ item }} state=installed
+  with_items: "{{ common_tools }}"

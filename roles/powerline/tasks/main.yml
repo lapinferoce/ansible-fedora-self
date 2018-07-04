@@ -1,0 +1,60 @@
+---
+- name: powerline
+  dnf:
+    name: powerline
+    state: latest
+  register: powerline_check
+  
+- name: powerline-font
+  dnf:
+    name: powerline-fonts
+    state: latest
+
+- name: tmux-powerline
+  dnf:
+    name: tmux-powerline
+    state: latest
+  register: tmux_powerline_check
+
+- name: vim-powerline
+  dnf:
+    name: vim-powerline
+    state: latest
+  register: vim_powerline_check
+
+- name: enable bash powerline
+  copy:
+      src: "{{ role_path }}/files/powerline.sh"
+      dest: "/home/{{item.name}}/etc/bash.d/powerline.sh"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      mode: "0755"
+  when: powerline_check is defined
+  with_items: "{{ user_list }}"
+
+- name: enable tmux-powerline
+  lineinfile:
+    path: "/home/{{item.name}}/.tmux.conf"
+    state: present
+    regexp: "^source.*"
+    line: source "/usr/share/tmux/powerline.conf"
+  with_items: "{{user_list}}"
+  when: tmux_powerline_check is defined
+
+- name:  chown tmux powerline
+  file:
+    path: "/home/{{item.name}}/.tmux.conf"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    state: file
+    mode: "0755"
+  with_items: "{{user_list}}"
+  when: tmux_powerline_check is defined
+
+
+#- name: vim config
+#  
+#  with_items: "{{user_list}}"
+#  when: tmux-powerline_check is defined
+
+  

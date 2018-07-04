@@ -1,0 +1,35 @@
+---
+- name: setup real users bash env
+  file:
+   path: "/home/{{item.name}}/etc/bash.d"
+   owner: "{{item.name}}"
+   group: "{{item.name}}"
+   state: directory
+  with_items: "{{user_list}}"
+
+- name: bash_rc
+  lineinfile:
+    path: "/home/{{item.name}}/.bashrc"
+    state: present
+    regexp: "^for.*done"
+    line: for i in $HOME/etc/bash.d/*.sh; do . $i;done
+  with_items: "{{user_list}}"
+
+- name: updating PATH var
+  copy:
+      src: "{{ role_path }}/files/path.sh"
+      dest: "/home/{{item.name}}/etc/bash.d/path.sh"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      mode: "0755"
+  with_items: "{{ user_list }}"
+
+- name: bash aliases
+  copy:
+      src: "{{ role_path }}/files/aliases.sh"
+      dest: "/home/{{item.name}}/etc/bash.d/aliases.sh"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      mode: "0755"
+  when: powerline_check is defined
+  with_items: "{{ user_list }}"

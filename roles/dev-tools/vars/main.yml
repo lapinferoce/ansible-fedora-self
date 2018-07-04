@@ -1,0 +1,13 @@
+packages:
+ - "@Development Tools"
+ - "@Development Libraries"
+ - elixir
+ - git
+ - subversion
+ - vim
+ - emacs-nox
+ - wget
+ - curl
+ - java-9-openjdk-*
+ - maven
+ - gradle

@@ -1,0 +1,3 @@
+hashicorp:
+        - {url: "https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip",name: "terraform" }
+        - {url: "https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip", name: "packer" }

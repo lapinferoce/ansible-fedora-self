@@ -1,0 +1,54 @@
+---
+- name: devops folder
+  file: 
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+    remote_src: yes
+  with_items:
+     - "/opt/devops/hashicorp"
+     - "/opt/bin"
+
+- name: getting hashicorp tools
+  get_url:
+    url: "{{item.url}}" 
+    dest: "/opt/devops/hashicorp/{{item.name}}.zip"
+    mode: 0754
+  with_items: "{{ hashicorp }}"
+        
+
+- name: unzip terraform
+  unarchive:
+          src:   "/opt/devops/hashicorp/{{item.name}}.zip"
+          dest:  "/opt/devops/hashicorp/"
+          remote_src: True
+  with_items: "{{ hashicorp }}"
+
+- name: linking
+  file: src="/opt/devops/hashicorp/{{item.name}}" dest="/opt/bin/{{item.name}}" state=link
+  with_items:  "{{ hashicorp }}"
+
+- name: adding package for terraform-kvm support
+  dnf:
+   state: present
+   name:
+    - golang
+    - golint
+    - libvirt-devel
+
+#- name: gretting terraform-provider-libvirt from git
+#  git:
+#    repo: "https://github.com/dmacvicar/terraform-provider-libvirt.git"
+#    dest: /opt/src/terraform-provider-libvirt
+#    update: no
+
+- name: installing terraform-provider-libvirt from git
+  shell: |
+   export GOPATH="/opt/go"
+   go get github.com/dmacvicar/terraform-provider-libvirt
+   go install github.com/dmacvicar/terraform-provider-libvirt
+   mkdir -p  /root/.terraform.d/plugins
+   cp /opt/go/bin/terraform-provider-libvirt  /root/.terraform.d/plugins

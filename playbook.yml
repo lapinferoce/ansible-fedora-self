@@ -1,0 +1,21 @@
+---
+
+- name: run the playbook task locally
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  vars:
+    user_list:
+       - {name: eric, groups: "eric,wheel"}
+  roles:
+    - commons
+    - cinnamon
+    - network
+    - kvm
+    - fetch-iso
+    - keybase
+    - devops-tools
+    - docker-ce
+    - powerline
+    - user-friendly-env
+    - dev-tools

@@ -1,0 +1,28 @@
+common_tools:
+  - vim
+  - emacs-nox
+  - tmux
+  - htop
+  - screen
+  - nmon
+#  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-28.noarch.rpm"
+  - gstreamer-plugins-base
+  - gstreamer1-plugins-base
+  - gstreamer-plugins-bad
+  - gstreamer-plugins-ugly
+  - gstreamer1-plugins-ugly
+  - gstreamer-plugins-good-extras
+  - gstreamer1-plugins-good-extras
+  - gstreamer1-plugins-bad-freeworld
+  - ffmpeg
+  - gstreamer-ffmpeg
+  - vlc
+  - google-chrome-stable
+  - gimp
+  - inkscape
+    #  - stacer
+  - pidgin
+  - redshift
+    #- flash-plugin
+  - alsa-plugins-pulseaudio
+    #  - libcurl

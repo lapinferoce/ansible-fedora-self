@@ -1,0 +1,28 @@
+---
+- name: install emacs package
+  dnf:
+   name:
+    - emacs-nox
+    - git
+   state: present
+
+- name: getting spacemacs
+  git:
+    repo: 'https://github.com/syl20bnr/spacemacs'
+    dest: /tmp/spacemacs-clone-tmp
+
+- name: cleaning spacemacs user env
+  file:
+    path: "/home/{{item.name}}/.emacs.d/"
+    state: absent
+  with_items: "{{ user_list }}"
+    
+- name: pimping users
+  copy:
+      src: "/tmp/spacemacs-clone-tmp"
+      dest: "/home/{{item.name}}/.emacs.d"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      remote_src: yes
+      mode: "0755"
+  with_items: "{{ user_list }}"

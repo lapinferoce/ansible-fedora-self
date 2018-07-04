@@ -1,0 +1,56 @@
+---
+- name: install kvm packages
+  dnf:
+    name:
+      - qemu-kvm
+      - qemu-img
+#      - virt-manager
+      - libvirt
+      - libvirt-python
+      - libvirt-client
+      - virt-install
+      - virt-manager
+ #     - virt-viewer
+      - bridge-utils
+      - libselinux-python
+    state: present
+
+- name: enable ip forward
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+
+
+- name: settings up network bridge interface
+  copy:
+    src: ifcfg-br0
+    dest: /etc/sysconfig/network-scripts/ifcfg-br0
+    owner: root
+    group: root
+    mode: 0644
+
+#  iptables -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
+#- name: update iptables
+- name:   enable dnsmasq on kvm guest network
+  lineinfile:
+    path: "/etc/libvirt/qemu/networks/default.xml"
+    insertafter: "<bridge name='virbr0' stp='on' delay='0'/>"
+    state: present
+    regexp: "<domain name='example.com' localOnly='yes'/>"
+    line: "<domain name='example.com' localOnly='yes'/>"
+
+- name:   setting dns as local
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - {src: "libvirt_dnsmasq.conf", dest: "/etc/NetworkManager/dnsmasq.d/libvirt_dnsmasq.conf" }
+    - {src: "localdns.conf"       , dest: "/etc/NetworkManager/conf.d/localdns.conf" }
+

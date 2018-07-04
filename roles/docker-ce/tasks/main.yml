@@ -1,0 +1,36 @@
+---
+- name: remove older/other docker release
+  dnf:
+    state: absent
+    name:
+      -  docker
+      -  docker-client 
+      -  docker-client-latest 
+      -  docker-common 
+      -  docker-latest 
+      -  docker-latest-logrotate 
+      -  docker-logrotate 
+      -  docker-selinux 
+      -  docker-engine-selinux
+      -  docker-engine
+
+- name: install plugin-core
+  dnf:
+    state: present
+    name:
+      - dnf-plugins-core
+
+- name: install docker-ce repos
+  shell: |
+    dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    dnf config-manager --set-enabled docker-ce-edge
+    dnf config-manager --set-enabled docker-ce-test
+
+- name: install docker-ce
+  dnf: name=docker-ce state=present
+
+- name: starting docker service
+  systemd:
+    state: started
+    enabled: yes
+    name: docker
