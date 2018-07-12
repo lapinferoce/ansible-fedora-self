@@ -1,0 +1,3 @@
+providers {
+    ansible = "/opt/bin/terraform-provisioner-ansible"
+}

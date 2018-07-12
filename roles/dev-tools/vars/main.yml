@@ -11,3 +11,8 @@ packages:
  - java-9-openjdk-*
  - maven
  - gradle
+ - nodejs
+ - npm
+ - love
+ - lua
+ - luarocks

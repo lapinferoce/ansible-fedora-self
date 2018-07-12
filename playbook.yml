@@ -8,15 +8,18 @@
     user_list:
        - {name: eric, groups: "eric,wheel"}
   roles:
-    - spacemacs
-    - commons
-    - cinnamon
-    - network
-    - kvm
-    - fetch-iso
-    - keybase
-    - devops-tools
-    - docker-ce
-    - powerline
-    - user-friendly-env
-    - dev-tools
+   - user-friendly-env
+   - commons
+   - cinnamon
+   - network
+   - kvm
+   - fetch-iso
+   - keybase
+   - devops-tools
+   - docker-ce
+   - powerline
+   - spacemacs
+   - dev-tools
+   - lxc
+   - docker-kluster
+ #  - my-vm

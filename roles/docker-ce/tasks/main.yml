@@ -25,6 +25,8 @@
     dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
     dnf config-manager --set-enabled docker-ce-edge
     dnf config-manager --set-enabled docker-ce-test
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo 
 
 - name: install docker-ce
   dnf: name=docker-ce state=present

@@ -1,0 +1,12 @@
+---
+- name: install lxc
+  dnf:
+    name:
+      - lxc
+      - lxc-templates
+      - dnsmasq
+      - debootstrap
+    state: present
+
+#- name:
+#    https://fedoraproject.org/wiki/LXC

@@ -15,13 +15,8 @@
    file: external_repos
    baseurl: "https://download.fedoraproject.org/pub/epel/$releasever/$basearch/"
    gpgcheck: no
-
-  yum_repository:
-   name: epel
-   description: EPEL YUM repo
-   file: external_repos
-   baseurl: "https://download.fedoraproject.org/pub/epel/$releasever/$basearch/"
-   gpgcheck: no
+   enabled: yes
+   enablegroups: yes
 
 - name: install chromium repo
   yum_repository:

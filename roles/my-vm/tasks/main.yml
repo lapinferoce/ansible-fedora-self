@@ -1,0 +1,6 @@
+---
+- name: terraform test
+  terraform:
+    binary_path: '/opt/bin/terraform'
+    project_path: '/home/eric/Devel/infravirt'
+    state: present

@@ -11,12 +11,13 @@
   with_items:
      - "/opt/devops/hashicorp"
      - "/opt/bin"
+     - "/opt/terraform-ansible"
 
 - name: getting hashicorp tools
   get_url:
     url: "{{item.url}}" 
     dest: "/opt/devops/hashicorp/{{item.name}}.zip"
-    mode: 0754
+    mode: 0755
   with_items: "{{ hashicorp }}"
         
 
@@ -25,6 +26,9 @@
           src:   "/opt/devops/hashicorp/{{item.name}}.zip"
           dest:  "/opt/devops/hashicorp/"
           remote_src: True
+          mode: 0755
+          owner: root
+          group: root
   with_items: "{{ hashicorp }}"
 
 - name: linking
@@ -39,12 +43,6 @@
     - golint
     - libvirt-devel
 
-#- name: gretting terraform-provider-libvirt from git
-#  git:
-#    repo: "https://github.com/dmacvicar/terraform-provider-libvirt.git"
-#    dest: /opt/src/terraform-provider-libvirt
-#    update: no
-
 - name: installing terraform-provider-libvirt from git
   shell: |
    export GOPATH="/opt/go"
@@ -52,3 +50,22 @@
    go install github.com/dmacvicar/terraform-provider-libvirt
    mkdir -p  /root/.terraform.d/plugins
    cp /opt/go/bin/terraform-provider-libvirt  /root/.terraform.d/plugins
+  args:
+   creates: /root/.terraform.d/plugins/terraform-provider-libvirt
+
+- name: installing terraform-ansible-provisionner from git
+  get_url:
+    url: "https://github.com/jonmorehouse/terraform-provisioner-ansible/releases/download/0.0.2/terraform-provisioner-ansible"
+    dest: /opt/devops/hashicorp/terraform-provisioner-ansible
+
+- name: linking
+  file: src="/opt/devops/hashicorp/terraform-provisioner-ansible" dest="/opt/bin/terraform-provisioner-ansible" state=link
+
+- name: creating dot terraformrc
+  copy:
+      src: "{{ role_path }}/files/dot-terraformrc"
+      dest: "/root/.terraformrc"
+      owner: root
+      group: root
+      mode: "0755"
+

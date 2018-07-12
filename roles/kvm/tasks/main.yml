@@ -13,6 +13,7 @@
  #     - virt-viewer
       - bridge-utils
       - libselinux-python
+      - libguestfs-tools-c
     state: present
 
 - name: enable ip forward

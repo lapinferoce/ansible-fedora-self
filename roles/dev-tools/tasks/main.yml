@@ -6,3 +6,36 @@
   with_items: "{{packages}}"
 
 
+- name: configure elixir mix
+  shell: |
+      yes | mix local.hex
+  args:
+    creates: "/home/{{item.name}}/.mix"
+  become_user: "{{item.name}}" 
+  with_items: "{{user_list}}"
+
+- name: adding .rvm in path
+  copy:
+      src: "{{ role_path }}/files/rvm.sh"
+      dest: "/home/{{item.name}}/etc/bash.d/rvm.sh"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      mode: "0755"
+  with_items: "{{ user_list }}"
+
+
+
+- name: install rvm for all user
+  shell: |
+    \curl -sSL https://get.rvm.io | bash
+    . ~/.rvm/scripts/rvm
+    rvm install 2.4
+    rvm use 2.4 --default
+    gem install bundler
+  args:
+    creates: "/home/{{item.name}}/.rvm"
+  become_user: "{{item.name}}" 
+  with_items: "{{user_list}}"
+
+
+  

@@ -5,7 +5,7 @@ common_tools:
   - htop
   - screen
   - nmon
-#  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-28.noarch.rpm"
+  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-28.noarch.rpm"
   - gstreamer-plugins-base
   - gstreamer1-plugins-base
   - gstreamer-plugins-bad
@@ -17,12 +17,16 @@ common_tools:
   - ffmpeg
   - gstreamer-ffmpeg
   - vlc
+  - lynx
+  - https://github.com/browsh-org/browsh/releases/download/v1.2.3/browsh_1.2.3_linux_amd64.rpm
   - google-chrome-stable
   - gimp
   - inkscape
     #  - stacer
   - pidgin
   - redshift
-    #- flash-plugin
+  - gparted
+  - gedit
+  #- flash-plugin
   - alsa-plugins-pulseaudio
     #  - libcurl

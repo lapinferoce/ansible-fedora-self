@@ -28,6 +28,7 @@
     path: "/home/{{item.name}}/.emacs.d/"
     state: absent
   with_items: "{{ user_list }}"
+  when: git_update.changed
 
 - name: get filename to copy
   command: "find /opt/spacemacs-src -type f"
