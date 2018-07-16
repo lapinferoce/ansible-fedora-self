@@ -1,0 +1,49 @@
+---
+# - name: get VM disks
+#   command: "ls /var/lib/libvirt/images/"
+#   register: disks
+# changed_when: "disks.rc != 0"
+
+- name: get list of VMs
+  virt:
+    command: "list_vms"
+  register: vms 
+
+
+- name: copying ks.cfg
+  copy: 
+     src: centos-ks.cfg
+     dest: /tmp/centos-ks.cfg
+     owner: root
+     group: root
+     mode: 0644
+
+- name: creating a centos base image
+  command: >
+    virt-install --name centos \
+                 --description 'centos base' \
+                 --ram 4096 \
+                 --vcpus 2 \
+                 --disk path=/var/lib/libvirt/images/Centos.x86_64.qcow2,size=10 \
+                 --os-type linux \
+                 --os-variant rhel7 \
+                 --network network:default \
+                 --graphics none \
+                 --location=/var/lib/libvirt/images/CentOS-7-x86_64-Minimal-1708.iso \
+                 --initrd-inject="/tmp/centos-ks.cfg" \
+                 --extra-args="ks=file:/centos-ks.cfg console=tty0 console=ttyS0,115200n8"
+  
+#                 --graphics vnc,listen=127.0.0.1,port=5901 \
+#                 --noautoconsole
+  when: '"centos" not in vms.list_vms'
+
+- name: wait for image create
+  virt:
+     command: status
+     name: "centos"
+  register: vmstatus
+  until: vmstatus.status == 'shutdown'
+  delegate_to: "localhost"
+  retries: 1500
+  delay: 10
+

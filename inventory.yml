@@ -1,0 +1,27 @@
+[self]
+127.0.0.1
+
+[kubernetes:children]
+docker-master
+docker-node
+
+
+[docker-master]
+master.example.com ansible_user=root
+
+[docker-node]
+node1.example.com ansible_ssh_user=root ansible_ssh_password=lapin
+
+[docker-master:vars]
+os=fedora-28
+mem=2048
+cpus=2
+os_type=rhel7
+file_type=qcow2
+
+[docker-node:vars]
+os=fedora-28
+mem=2048
+cpus=2
+os_type=rhel7
+file_type=qcow2
