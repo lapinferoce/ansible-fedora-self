@@ -38,6 +38,7 @@
     state: present
     regexp: "^source.*"
     line: source "/usr/share/tmux/powerline.conf"
+    create: yes
   with_items: "{{user_list}}"
   when: tmux_powerline_check is defined
 

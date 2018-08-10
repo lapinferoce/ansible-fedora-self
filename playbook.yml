@@ -13,7 +13,7 @@
   - cinnamon
   - network
   - kvm
-  - fetch-iso
+#  - fetch-iso
   - keybase
   - devops-tools
   - docker-ce
@@ -21,5 +21,5 @@
   - spacemacs
   - dev-tools
   - lxc
-  - docker-cluster
+#  - docker-cluster
  #  - my-vm
