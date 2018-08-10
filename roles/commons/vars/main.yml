@@ -30,3 +30,4 @@ common_tools:
   #- flash-plugin
   - alsa-plugins-pulseaudio
     #  - libcurl
+  - libselinux-python

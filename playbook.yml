@@ -6,10 +6,10 @@
   become: yes
   vars:
     user_list:
-       - {name: eric, groups: "eric,wheel"}
+       - {name: lapinferoce, groups: "lapinferoce,wheel"}
   roles:
-  - user-friendly-env
   - commons
+  - user-friendly-env
   - cinnamon
   - network
   - kvm

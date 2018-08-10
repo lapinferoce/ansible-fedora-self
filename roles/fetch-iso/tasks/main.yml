@@ -5,7 +5,7 @@
     url: "{{ item.url }}"
     dest: "/var/lib/libvirt/images/{{ item.name}}"
   with_items:
-    - {url: "http://centos.mirror.ate.info/7/isos/x86_64/CentOS-7-x86_64-Minimal-1708.iso" , name: "CentOS-7-x86_64-Minimal-1708.iso" }
+    - {url: "http://centos.mirror.ate.info/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso" , name: "CentOS-7-x86_64-Minimal-1804.iso" }
     - {url: "https://download.fedoraproject.org/pub/fedora/linux/releases/27/Server/x86_64/iso/Fedora-Server-netinst-x86_64-27-1.6.iso", name: "Fedora-Server-netinst-x86_64-27-1.6.iso" }
     - {url: "http://cloud.centos.org/centos/7/atomic/images/CentOS-Atomic-Host-7-Installer.iso", name: "CentOS-Atomic-Host-7-Installer.iso"}    
     - {url: "https://download.fedoraproject.org/pub/alt/atomic/stable/Fedora-Atomic-27-20180117.1/Atomic/x86_64/iso/Fedora-Atomic-ostree-x86_64-27-20180117.1.iso" ,name: "Fedora-Atomic-ostree-x86_64-27-20180117.1.iso"}
