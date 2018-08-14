@@ -37,5 +37,12 @@
   become_user: "{{item.name}}" 
   with_items: "{{user_list}}"
 
+- name: install rust for all user
+  shell: |
+    \curl https://sh.rustup.rs -sSf | sh  -s -- -y
+  args:
+    creates: "/home/{{item.name}}/.rustup"
+  become_user: "{{item.name}}" 
+  with_items: "{{user_list}}"
 
-  
+

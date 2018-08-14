@@ -1,0 +1,20 @@
+---
+- name: install avahi tools
+  dnf:
+    name: avahi-tools
+    state: present
+
+- name: configure avahi / zeroconf
+  lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: '^hosts:.*'
+    line: 'hosts: mdns4_minimal files dns myhostname'
+  notify: restart avahi
+
+- name: start avahi
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: avahi-daemon
+    enabled: yes
+

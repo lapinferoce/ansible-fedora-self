@@ -21,5 +21,6 @@
   - spacemacs
   - dev-tools
   - lxc
+  - avahi-daemon
 #  - docker-cluster
  #  - my-vm
